@@ -5,77 +5,453 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>味无味 · 好评助手</title>
 <style>
-*{margin:0;padding:0;box-sizing:border-box}
-:root{--primary:#C8965A;--primary-light:#E8D5B8;--primary-dark:#A07040;--bg:#FBF8F4;--card-bg:#FFF;--text:#2C2418;--text-secondary:#8C7A62;--shadow:0 4px 20px rgba(160,112,64,.1);--radius:16px}
-body{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Hiragino Sans GB','Microsoft YaHei',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;padding-bottom:40px}
-.header{background:linear-gradient(135deg,#C8965A,#A07040);padding:40px 24px 50px;text-align:center;position:relative;overflow:hidden}
-.header::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(circle,rgba(255,255,255,.08) 0%,transparent 60%)}
-.header .logo{font-size:42px;font-weight:800;color:#fff;letter-spacing:12px;position:relative;text-shadow:0 2px 8px rgba(0,0,0,.15)}
-.header .tagline{color:rgba(255,255,255,.85);font-size:14px;margin-top:8px;letter-spacing:4px;position:relative}
-.container{max-width:420px;margin:-30px auto 0;padding:0 16px;position:relative}
-.review-card{background:var(--card-bg);border-radius:var(--radius);box-shadow:var(--shadow);padding:24px;margin-bottom:16px}
-.review-card .label{display:flex;align-items:center;gap:8px;margin-bottom:16px}
-.review-card .label span{font-size:13px;color:var(--text-secondary);letter-spacing:1px}
-.review-card .label .dot{width:6px;height:6px;background:var(--primary);border-radius:50%;animation:pulse 2s infinite}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
-.review-text{font-size:15px;line-height:1.8;color:var(--text);min-height:100px;word-break:break-all}
-.star-row{display:flex;align-items:center;gap:4px;margin-bottom:12px}
-.star-row .star{font-size:18px;color:#F5A623}
-.star-row .rating-text{font-size:12px;color:var(--text-secondary);margin-left:8px}
-.btn-group{display:flex;gap:10px;margin-top:20px}
-.btn{flex:1;height:44px;border:none;border-radius:12px;font-size:14px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;transition:all .2s;-webkit-tap-highlight-color:transparent}
-.btn:active{transform:scale(.96)}
-.btn-copy{background:var(--primary);color:#fff}
-.btn-refresh{background:var(--primary-light);color:var(--primary-dark)}
-.platform-section{background:var(--card-bg);border-radius:var(--radius);box-shadow:var(--shadow);padding:24px;margin-bottom:16px}
-.platform-section .section-title{font-size:14px;font-weight:600;color:var(--text);margin-bottom:16px;display:flex;align-items:center;gap:8px}
-.platform-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.platform-btn{height:52px;border:1.5px solid #eee;border-radius:12px;background:#fff;font-size:14px;font-weight:500;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:all .2s;color:var(--text);-webkit-tap-highlight-color:transparent}
-.platform-btn:active{transform:scale(.96);background:#f9f6f2}
-.platform-btn .icon{font-size:20px}
-.platform-btn.dianping{border-color:#FF6633;color:#FF6633}
-.platform-btn.meituan{border-color:#FFD100;color:#E6A800}
-.platform-btn.douyin{border-color:#111;color:#111}
-.platform-btn.xiaohongshu{border-color:#FF2442;color:#FF2442}
-.toast{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%) scale(.8);background:rgba(0,0,0,.78);color:#fff;padding:16px 32px;border-radius:12px;font-size:14px;opacity:0;transition:all .3s cubic-bezier(.4,0,.2,1);pointer-events:none;z-index:999;text-align:center;backdrop-filter:blur(10px)}
-.toast.show{opacity:1;transform:translate(-50%,-50%) scale(1)}
-.tips{text-align:center;padding:16px;font-size:12px;color:var(--text-secondary);line-height:1.8}
-.tips .step{display:inline-flex;align-items:center;gap:4px;margin:0 4px}
-.tips .num{width:18px;height:18px;background:var(--primary-light);color:var(--primary-dark);border-radius:50%;font-size:11px;display:inline-flex;align-items:center;justify-content:center;font-weight:600}
-.footer{text-align:center;padding:20px;font-size:11px;color:#ccc;letter-spacing:2px}
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --primary: #C8965A;
+    --primary-light: #E8D5B8;
+    --primary-dark: #A07040;
+    --bg: #FBF8F4;
+    --card-bg: #FFFFFF;
+    --text: #2C2418;
+    --text-secondary: #8C7A62;
+    --shadow: 0 4px 20px rgba(160,112,64,0.10);
+    --radius: 16px;
+  }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    padding-bottom: 40px;
+  }
+  .header {
+    background: linear-gradient(135deg, #C8965A 0%, #A07040 100%);
+    padding: 40px 24px 50px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .header::before {
+    content: '';
+    position: absolute;
+    top: -50%; left: -50%;
+    width: 200%; height: 200%;
+    background: radial-gradient(circle, rgba(255,255,255,0.08) 0%, transparent 60%);
+  }
+  .header .logo {
+    font-size: 42px;
+    font-weight: 800;
+    color: #fff;
+    letter-spacing: 12px;
+    position: relative;
+    text-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  }
+  .header .tagline {
+    color: rgba(255,255,255,0.85);
+    font-size: 14px;
+    margin-top: 8px;
+    letter-spacing: 4px;
+    position: relative;
+  }
+  .container {
+    max-width: 420px;
+    margin: -30px auto 0;
+    padding: 0 16px;
+    position: relative;
+  }
+  .review-card {
+    background: var(--card-bg);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 24px;
+    margin-bottom: 16px;
+  }
+  .review-card .label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 16px;
+  }
+  .review-card .label span {
+    font-size: 13px;
+    color: var(--text-secondary);
+    letter-spacing: 1px;
+  }
+  .review-card .label .dot {
+    width: 6px; height: 6px;
+    background: var(--primary);
+    border-radius: 50%;
+    animation: pulse 2s infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+  }
+  .review-text {
+    font-size: 15px;
+    line-height: 1.8;
+    color: var(--text);
+    min-height: 100px;
+    word-break: break-all;
+  }
+  .star-row {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    margin-bottom: 12px;
+  }
+  .star-row .star {
+    font-size: 18px;
+    color: #F5A623;
+  }
+  .star-row .rating-text {
+    font-size: 12px;
+    color: var(--text-secondary);
+    margin-left: 8px;
+  }
+  .btn-group {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+  }
+  .btn {
+    flex: 1;
+    height: 44px;
+    border: none;
+    border-radius: 12px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    transition: all 0.2s;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .btn:active { transform: scale(0.96); }
+  .btn-copy {
+    background: var(--primary);
+    color: #fff;
+  }
+  .btn-refresh {
+    background: var(--primary-light);
+    color: var(--primary-dark);
+  }
+  .platform-section {
+    background: var(--card-bg);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 24px;
+    margin-bottom: 16px;
+  }
+  .platform-section .section-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .platform-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+  .platform-btn {
+    height: 52px;
+    border: 1.5px solid #eee;
+    border-radius: 12px;
+    background: #fff;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: all 0.2s;
+    color: var(--text);
+    -webkit-tap-highlight-color: transparent;
+  }
+  .platform-btn:active { transform: scale(0.96); background: #f9f6f2; }
+  .platform-btn .icon { font-size: 20px; }
+  .platform-btn.dianping { border-color: #FF6633; color: #FF6633; }
+  .platform-btn.meituan { border-color: #FFD100; color: #E6A800; }
+  .platform-btn.douyin { border-color: #111; color: #111; }
+  .platform-btn.xiaohongshu { border-color: #FF2442; color: #FF2442; }
+  .toast {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.8);
+    background: rgba(0,0,0,0.78);
+    color: #fff;
+    padding: 16px 32px;
+    border-radius: 12px;
+    font-size: 14px;
+    opacity: 0;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    pointer-events: none;
+    z-index: 999;
+    text-align: center;
+    backdrop-filter: blur(10px);
+  }
+  .toast.show {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+  .tips {
+    text-align: center;
+    padding: 16px;
+    font-size: 12px;
+    color: var(--text-secondary);
+    line-height: 1.8;
+  }
+  .tips .step {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    margin: 0 4px;
+  }
+  .tips .num {
+    width: 18px;
+    height: 18px;
+    background: var(--primary-light);
+    color: var(--primary-dark);
+    border-radius: 50%;
+    font-size: 11px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+  }
+  .footer {
+    text-align: center;
+    padding: 20px;
+    font-size: 11px;
+    color: #ccc;
+    letter-spacing: 2px;
+  }
 </style>
 </head>
 <body>
-<div class="header"><div class="logo">味无味</div><div class="tagline">感谢您的用餐 · 期待您的好评</div></div>
-<div class="container">
-<div class="review-card">
-<div class="label"><div class="dot"></div><span>AI 已为您生成专属评价</span></div>
-<div class="star-row"><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="rating-text">五星好评</span></div>
-<div class="review-text" id="reviewText"></div>
-<div class="btn-group"><button class="btn btn-copy" onclick="copyReview()">📋 复制评价</button><button class="btn btn-refresh" onclick="generateReview()">🔄 换一条</button></div>
+<div class="header">
+  <div class="logo">味无味</div>
+  <div class="tagline">感谢您的用餐 · 期待您的好评</div>
 </div>
-<div class="platform-section">
-<div class="section-title">📱 选择平台去发布</div>
-<div class="platform-grid">
-<button class="platform-btn dianping" onclick="openPlatform('dianping')"><span class="icon">🔶</span> 大众点评</button>
-<button class="platform-btn meituan" onclick="openPlatform('meituan')"><span class="icon">🟡</span> 美团</button>
-<button class="platform-btn douyin" onclick="openPlatform('douyin')"><span class="icon">🎵</span> 抖音</button>
-<button class="platform-btn xiaohongshu" onclick="openPlatform('xiaohongshu')"><span class="icon">📕</span> 小红书</button>
-</div></div>
-<div class="tips"><span class="step"><span class="num">1</span> 点击复制评价</span> → <span class="step"><span class="num">2</span> 选择平台</span> → <span class="step"><span class="num">3</span> 粘贴发布</span><br>评价已复制到剪贴板，打开App直接粘贴即可 ❤️</div>
-<div class="footer">味无味 · 好评助手</div>
+<div class="container">
+  <div class="review-card">
+    <div class="label">
+      <div class="dot"></div>
+      <span>AI 已为您生成专属评价</span>
+    </div>
+    <div class="star-row">
+      <span class="star">★</span>
+      <span class="star">★</span>
+      <span class="star">★</span>
+      <span class="star">★</span>
+      <span class="star">★</span>
+      <span class="rating-text">五星好评</span>
+    </div>
+    <div class="review-text" id="reviewText"></div>
+    <div class="btn-group">
+      <button class="btn btn-copy" onclick="copyReview()">📋 复制评价</button>
+      <button class="btn btn-refresh" onclick="generateReview()">🔄 换一条</button>
+    </div>
+  </div>
+  <div class="platform-section">
+    <div class="section-title">📱 选择平台去发布</div>
+    <div class="platform-grid">
+      <button class="platform-btn dianping" onclick="openPlatform('dianping')">
+        <span class="icon">🔶</span> 大众点评
+      </button>
+      <button class="platform-btn meituan" onclick="openPlatform('meituan')">
+        <span class="icon">🟡</span> 美团
+      </button>
+      <button class="platform-btn douyin" onclick="openPlatform('douyin')">
+        <span class="icon">🎵</span> 抖音
+      </button>
+      <button class="platform-btn xiaohongshu" onclick="openPlatform('xiaohongshu')">
+        <span class="icon">📕</span> 小红书
+      </button>
+    </div>
+  </div>
+  <div class="tips">
+    <span class="step"><span class="num">1</span> 点击复制评价</span> →
+    <span class="step"><span class="num">2</span> 选择平台</span> →
+    <span class="step"><span class="num">3</span> 粘贴发布</span>
+    <br>评价已复制到剪贴板，打开App直接粘贴即可 ❤️
+  </div>
+  <div class="footer">味无味 · 好评助手</div>
 </div>
 <div class="toast" id="toast"></div>
 <script>
-const templates={openings:["第一次来味无味，体验感超棒！","朋友推荐来的味无味，果然没让我失望！","周末和家人来味无味聚餐，非常满意的一次体验。","被味无味的装修风格吸引进来的，没想到菜品更惊艳！","在味无味吃了一顿舒服的饭，忍不住来写个好评。","路过看到味无味就走进来了，真的是意外之喜！","已经是第三次来味无味了，每次都很满足。","同事聚餐选了味无味，大家都说选得好！","心心念念的味无味终于打卡了，值得专程来吃！","味无味绝对是这条街最值得去的餐厅，没有之一。","今天特意带朋友来味无味尝尝，朋友赞不绝口。","味无味已经加入我的必吃清单了！"],dishes:["菜品的味道非常正宗，食材新鲜，每一道都很用心。","点了好几个招牌菜，道道都很惊艳，分量也很足。","菜的口味很有层次感，咸淡适中，老少皆宜。","食材看得出很新鲜，烹饪火候掌握得恰到好处。","每道菜的摆盘都很精致，味道更是一绝！","招牌菜真的名不虚传，鲜香入味，回味无穷。","菜品种类丰富，口味独特，和别家完全不一样。","这里的菜真的很有特色，能吃出厨师的用心。","口感细腻，调味恰到好处，完全符合我的口味。","菜量很足，味道也很棒，性价比超高！","每一口都是享受，食材品质明显高于同类餐厅。","连不怎么爱吃的朋友都把盘子吃光了，真的好吃。"],ambience:["餐厅环境非常舒适，装修风格很有品味。","整体氛围很温馨，灯光柔和，适合聚餐约会。","环境干净整洁，桌椅摆放很有格调。","装修很有设计感，拍照也很出片！","用餐环境很安静，不会太嘈杂，体验很好。","店面虽然不大，但布置得很精致，让人很放松。","空间宽敞明亮，坐着很舒服，不拥挤。","餐厅的氛围营造得很好，音乐也很搭。","卫生条件很好，桌面和餐具都非常干净。","整个餐厅给人一种高级但不拘束的感觉，很舒服。"],service:["服务员态度特别好，热情又不过分打扰。","服务非常周到细致，上菜速度也很快。","工作人员很专业，主动推荐了几道特色菜。","叫了几次服务员，响应都很及时，态度超好。","服务态度真的一级棒，笑脸相迎，宾至如归。","有个服务员还帮忙推荐了适合小朋友的菜，很贴心。","结账很方便，服务流程很顺畅。","上菜速度很快，等待时间短，这一点必须给好评。","整体服务给人宾至如归的感觉，很舒心。","服务细节做得很好，比如主动加水、换骨碟。"],endings:["总之非常推荐，下次还会再来！","强烈安利给大家，绝对不踩雷！","好评必须给满分，下次带更多朋友来！","味无味真的值得一来，性价比超高的宝藏餐厅！","下次一定还来，已经在期待了～","推荐指数五颗星，闭眼冲就对了！","总结就一个字：绝！必须推荐给身边的人。","已经推荐给好几个朋友了，大家都说好吃！","以后聚餐就来这里了，加入收藏！⭐","非常满意的一次用餐体验，一定会再来的～","吃过就知道，味无味绝对是回头客级别的餐厅！","一句话：来了就不会后悔，回头客预定！"]};
-function pick(a){return a[Math.floor(Math.random()*a.length)]}
-let lastReview='';
-function generateReview(){let r='',n=0;do{const o=pick(templates.openings),d=pick(templates.dishes),a=Math.random()>0.3?pick(templates.ambience):'',s=Math.random()>0.3?pick(templates.service):'',e=pick(templates.endings),p=[o,d];if(a)p.push(a);if(s)p.push(s);p.push(e);r=p.join('');n++}while(r===lastReview&&n<10);lastReview=r;const el=document.getElementById('reviewText');el.textContent='';let i=0;const t=setInterval(()=>{if(i<r.length){el.textContent+=r[i];i++}else clearInterval(t)},25)}
-function copyReview(){const t=document.getElementById('reviewText').textContent;if(!t){showToast('请先等待评价生成完毕');return}if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(()=>showToast('✅ 评价已复制\n请选择平台去粘贴发布')).catch(()=>fallbackCopy(t))}else fallbackCopy(t)}
-function fallbackCopy(t){const a=document.createElement('textarea');a.value=t;a.style.position='fixed';a.style.left='-9999px';document.body.appendChild(a);a.select();try{document.execCommand('copy');showToast('✅ 评价已复制\n请选择平台去粘贴发布')}catch(e){showToast('❌ 复制失败，请长按文字手动复制')}document.body.removeChild(a)}
-function openPlatform(p){const t=document.getElementById('reviewText').textContent;if(t&&navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(t).catch(()=>{});const s={dianping:{app:'dianping://shopDetail',web:'https://m.dianping.com/',name:'大众点评'},meituan:{app:'imeituan://www.meituan.com/',web:'https://i.meituan.com/',name:'美团'},douyin:{app:'snssdk1128://',web:'https://www.douyin.com/',name:'抖音'},xiaohongshu:{app:'xhsdiscover://',web:'https://www.xiaohongshu.com/',name:'小红书'}};const pl=s[p];showToast('📋 评价已复制\n正在打开'+pl.name+'...\n打开后粘贴发布即可');const st=Date.now(),f=document.createElement('iframe');f.style.display='none';f.src=pl.app;document.body.appendChild(f);setTimeout(()=>{document.body.removeChild(f);if(Date.now()-st<2500)window.location.href=pl.web},2000)}
-function showToast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');clearTimeout(t._timer);t._timer=setTimeout(()=>t.classList.remove('show'),2500)}
-window.addEventListener('DOMContentLoaded',generateReview);
+const templates = {
+  openings: [
+    "在介观当代艺术博物馆二楼发现了味无味，先看展再吃饭，这体验绝了！",
+    "朋友说仙足岛有家开在艺术馆里的披萨店，来了才知道真的太特别了！",
+    "被介观的展览吸引过来的，没想到楼上藏着这么一家宝藏餐厅！",
+    "拉萨探店｜在当代艺术博物馆里吃窑烤披萨，这种体验只有味无味能给！",
+    "逛完介观的展上楼闻到窑炉烤披萨的香味，走不动了直接坐下来吃！",
+    "来拉萨一定要打卡味无味，在艺术馆里吃意大利窑烤披萨，太有调性了。",
+    "第三次来味无味了，每次来仙足岛都要上楼吃一顿，已经是刚需了。",
+    "带外地朋友来介观看展+味无味吃饭，朋友说这是她拉萨之行最大的惊喜！",
+    "味无味真的是拉萨最有特色的餐厅，楼下看当代艺术，楼上吃窑烤披萨。",
+    "在介观当代艺术中心吃了顿饭，艺术和美食的碰撞，太浪漫了。",
+    "心心念念的味无味终于打卡了，「用西藏食材做世界味道」真的名不虚传！",
+    "听说老板在西藏生活了三十年，难怪能把藏地食材玩出这么多花样。",
+  ],
+  dishes: [
+    "必点酸萝卜牦牛肉披萨！酸萝卜的爽脆配上牦牛肉的醇厚，再裹着拉丝芥士，一口下去酸鲜香奶全有了。",
+    "牦牛肉披萨绝了，高原酸萝卜配牦牛肉，这大概是全世界独一份的味道，90秒窑烤出来的焦斑太诱人了。",
+    "辣皮子鸡丝披萨太上头了！新疆辣皮子带着阳光晒干后的甜香，配上芥士和鸡丝，辣得过瘾又停不下来。",
+    "成都泡椒鸡杂披萨必须吃！酸辣的泡椒配上爽脆的鸡杂，被芥士温柔地接住，太有创意了。",
+    "黑松露菌菇披萨惊艼到我了，松露切片后香气霸道，搭配高原菌菇，每一口都是大地的馈赠。",
+    "九珍藏地鸡汤一定要喝！瓦罐慢炖的鸡汤，药材和鸡肉的鲜甜交融，一口下去从胃暖到心。",
+    "点了酸萝卜牦牛肉披萨和一碗藏地鸡汤，披萨边缘的豹纹焦斑太好看了，鸡汤鲜到眉毛掉下来。",
+    "窑烤烤鸡必须推荐！整鸡在窑炉里慢烤，外皮金黄酥脆，撕开鸡腿肉汁直流，太香了。",
+    "意大利窑炉400度高温90秒出炉，饼底焦脆又有嚼劲，芥士咱嘟嘟冒泡的样子看着就流口水。",
+    "日光水果披萨好清新，高原水果的清甜配芥士的咸香，窑火里达成的奇妙和解，像初恋的味道。",
+    "酸萝卜牦牛肉意面也很绝，藏地风味和意大利面的跨界恋爱，酸爽开胃一口入魂。",
+    "窑烤香肠拼盘配拉萨啊酒，切开香肠哔嘿一声脆响，肉香混着果木香，这就是高原的惬意。",
+    "玛格丽特虽然简单但最考验功底，番茄芥士罗勒的三原色，被窑火赋予豹纹焦边，经典永远是经典。",
+    "藏地鸡汤真的是高原的温柔，满满的药材香，喝完整个人都暖洋洋的，在拉萨必须来一碗。",
+  ],
+  ambience: [
+    "餐厅在介观当代艺术博物馆二楼，墙上的画作和装置艺术让吃饭都变成了一种享受。",
+    "推开门像走进一幅画，大胆的色块像藏地经幡被拆解重组，随手一拍都是大片。",
+    "楼下看当代艺术展，楼上吃窑烤披萨，艺术不再是被仰望的存在，而是日常的一部分。",
+    "整个空间充满艺术气息，角落里的装置艺术、墙面的色彩，连空气里都飘着灵感的味道。",
+    "在艺术馆里吃饭这个体验太独特了，氛围感拉满，拍照巨出片！",
+    "能看到窑炉里木柴燃烧的火光，师傅在炉前操作，烟火气和艺术感完美融合。",
+    "仙足岛本身就很美，介观的建筑又很有设计感，吃完饭下楼逛展，一个下午完美度过。",
+    "坐在窗边看着拉萨的阳光洒进来，墙上是当代艺术作品，桌上是窑烤披萨，太幸福了。",
+    "「当艺术的浪漫遇上多元的美味」，这句话就是对味无味最好的形容。",
+    "窑炉的噹啪声响配上艺术馆的氛围，有一种在那不勒斯街头吃披萨的感觉。",
+  ],
+  service: [
+    "服务员很热情地介绍了每款披萨的特色，帮我们推荐了酸萝卜牦牛肉，果然没踩雷。",
+    "听服务员讲了窑炉从意大利运过来的故事，师傅花两周一砖一砖砌的，太有匠心了。",
+    "服务员推荐的藏地鸡汤真的绝了，说是需要提前预定的，幸好当天还有。",
+    "上菜速度很快，毕竟窑烤只要90秒，现烤现上，披萨端上来还在冒泡。",
+    "工作人员很专业，详细介绍了每种披萨用的西藏食材，能感受到对菜品的热爱。",
+    "服务态度特别好，还提醒我们楼下有展览可以看，吃完饭正好去逛逛。",
+    "看到厨师在窑炉前认真操作的样子就知道这家店靠谱，每张披萨都是现做现烤。",
+    "服务员说老板在西藏生活了三十年，怪不得能把藏地食材融合得这么好。",
+  ],
+  endings: [
+    "来拉萨一定要来味无味，看展+吃披萨，一站式的艺术美食之旅！",
+    "强烈推荐！全世界大概只有这里能在艺术馆里吃到牦牛肉披萨了。",
+    "五星好评！下次来拉萨第一件事就是直奔仙足岛的味无味。",
+    "味无味绝对是拉萨最有特色的餐厅，没有之一，已加入必吃清单！",
+    "推荐指数满分，用西藏食材做世界味道，味无味做到了！",
+    "已经安利给所有要来拉萨的朋友了，来了必须打卡味无味！",
+    "下次还来，要试试辣皮子鸡丝披萨和滋补养生汤，已经在期待了～",
+    "一句话：在介观吃味无味，是拉萨最浪漫的事情之一。",
+    "吃过就懂，味无味不是在做融合菜，是在做三十年藏地生活的味道。",
+    "回头客预定！下次要带更多朋友来感受这个艺术馆里的宝藏餐厅。",
+    "总结：一口窑炉、一群有故事的人、一桌惊艼的菜，这就是味无味。",
+    "味无味，胃真对！这不是随便说说的，是每一口都在证明的事。",
+  ],
+};
+
+function pick(arr) {
+  return arr[Math.floor(Math.random() * arr.length)];
+}
+
+let lastReview = '';
+
+function generateReview() {
+  let review = '';
+  let attempts = 0;
+  do {
+    const opening = pick(templates.openings);
+    const dish = pick(templates.dishes);
+    const amb = Math.random() > 0.3 ? pick(templates.ambience) : '';
+    const svc = Math.random() > 0.3 ? pick(templates.service) : '';
+    const ending = pick(templates.endings);
+    const parts = [opening, dish];
+    if (amb) parts.push(amb);
+    if (svc) parts.push(svc);
+    parts.push(ending);
+    review = parts.join('');
+    attempts++;
+  } while (review === lastReview && attempts < 10);
+  lastReview = review;
+  const el = document.getElementById('reviewText');
+  el.textContent = '';
+  let i = 0;
+  const timer = setInterval(() => {
+    if (i < review.length) {
+      el.textContent += review[i];
+      i++;
+    } else {
+      clearInterval(timer);
+    }
+  }, 25);
+}
+
+function copyReview() {
+  const text = document.getElementById('reviewText').textContent;
+  if (!text) { showToast('请先等待评价生成完毕'); return; }
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).then(() => {
+      showToast('✅ 评价已复制\n请选择平台去粘贴发布');
+    }).catch(() => { fallbackCopy(text); });
+  } else { fallbackCopy(text); }
+}
+
+function fallbackCopy(text) {
+  const ta = document.createElement('textarea');
+  ta.value = text;
+  ta.style.position = 'fixed';
+  ta.style.left = '-9999px';
+  document.body.appendChild(ta);
+  ta.select();
+  try {
+    document.execCommand('copy');
+    showToast('✅ 评价已复制\n请选择平台去粘贴发布');
+  } catch (e) {
+    showToast('❌ 复制失败，请长按文字手动复制');
+  }
+  document.body.removeChild(ta);
+}
+
+function openPlatform(platform) {
+  const text = document.getElementById('reviewText').textContent;
+  if (text && navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).catch(() => {});
+  }
+  const schemes = {
+    dianping: { app: 'dianping://shopDetail', web: 'https://m.dianping.com/', name: '大众点评' },
+    meituan: { app: 'imeituan://www.meituan.com/', web: 'https://i.meituan.com/', name: '美团' },
+    douyin: { app: 'snssdk1128://', web: 'https://www.douyin.com/', name: '抖音' },
+    xiaohongshu: { app: 'xhsdiscover://', web: 'https://www.xiaohongshu.com/', name: '小红书' }
+  };
+  const p = schemes[platform];
+  showToast('📋 评价已复制\n正在打开' + p.name + '...\n打开后粘贴发布即可');
+  const start = Date.now();
+  const iframe = document.createElement('iframe');
+  iframe.style.display = 'none';
+  iframe.src = p.app;
+  document.body.appendChild(iframe);
+  setTimeout(() => {
+    document.body.removeChild(iframe);
+    if (Date.now() - start < 2500) { window.location.href = p.web; }
+  }, 2000);
+}
+
+function showToast(msg) {
+  const toast = document.getElementById('toast');
+  toast.textContent = msg;
+  toast.classList.add('show');
+  clearTimeout(toast._timer);
+  toast._timer = setTimeout(() => { toast.classList.remove('show'); }, 2500);
+}
+
+window.addEventListener('DOMContentLoaded', generateReview);
 </script>
 </body>
 </html>
